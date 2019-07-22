@@ -30,6 +30,9 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach(to => {
+  if (to.meta.title) {
+    window.document.title = to.meta.title
+  }
   iView.LoadingBar.finish()
   window.scrollTo(0, 0)
 })
