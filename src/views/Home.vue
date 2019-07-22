@@ -17,7 +17,7 @@
 import HelloWorld from '@/components/HelloWorld.vue'
 import Bc from '../components/broChild'
 import Ic from '../components/count-to'
-import { getData } from '../api/data.js'
+import { getHeroes, getHeroesById, createHero } from '../api/data.js'
 export default {
   name: 'home',
   components: {
@@ -42,8 +42,12 @@ export default {
   },
   created() {
     this.$bus.$on('tx', d => console.log(d))
-    getData().then(res => {
+    getHeroes().then(res => {
       console.log(res)
+    })
+    getHeroesById(8)
+    createHero({
+      name: 'kexin'
     })
     console.log('====================================')
     // console.log(this.$store.state.app.list)
