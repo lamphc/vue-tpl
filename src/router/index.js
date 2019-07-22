@@ -10,10 +10,22 @@ const router = new Router({
   mode: 'history'
 })
 
+// const LG = 'login';
+
 // 路由事件
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
+  // 路由守卫
+  // const token = localStorage.getItem('tkx')
+  // if (!token) {
+  //   next({ name: LG })
+  // } else if (to.name === LG && token) {
+  //   next({ name: 'home' })
+  // } else if (to.name === LG && !token) {
+  //   next()
+  // } else {
   next()
+  // }
 
 })
 

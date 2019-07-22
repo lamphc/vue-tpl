@@ -1,6 +1,6 @@
 export default {
   state: {
-    app: []
+    list: []
   },
   mutations: {
     //
