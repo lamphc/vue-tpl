@@ -38,6 +38,7 @@ export default {
 
 <style lang="less" scoped>
 .header-box {
-  posz-index: 100000;
+  position: relative;
+  z-index: 1000;
 }
 </style>
