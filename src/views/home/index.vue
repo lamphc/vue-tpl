@@ -25,6 +25,7 @@
       <div class="flex-box-content">
         <div class="home">
           <img @click="tx" alt="Vue logo" src="../../assets/img/logo.png" />
+          <Ec></Ec>
           <h1>
             <p v-for="(i,j) in menu" :key="j">{{i.key}}</p>
           </h1>
@@ -40,6 +41,7 @@
 
 <script>
 import Header from '@/components/header/header'
+import Ec from '@/components/charts/force-tree'
 import HelloWorld from '@/components/HelloWorld.vue'
 import Bc from '@/components/broChild'
 import Ic from '@/components/count-to'
@@ -50,7 +52,8 @@ export default {
     Header,
     HelloWorld,
     Bc,
-    Ic
+    Ic,
+    Ec
   },
   computed: {
     menu() {
