@@ -25,7 +25,9 @@
       <div class="flex-box-content">
         <div class="home">
           <img @click="tx" alt="Vue logo" src="../../assets/img/logo.png" />
-          <Ec></Ec>
+          <div>
+            <Ec style="height:300px"></Ec>
+          </div>
           <h1>
             <p v-for="(i,j) in menu" :key="j">{{i.key}}</p>
           </h1>

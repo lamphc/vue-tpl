@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>echart3 力引导布局实现节点的提示和折叠</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
+</head>
+
+<body>
+  <div id="chart" style="width: 100%;height: 600px"></div>
+  <script type="text/javascript">
+    console.log(echarts);
+
+    var echart = echarts.init(document.getElementById('chart'));
+    var options = {
+      tooltip: {
+        "formatter": function (arg) {
+          var nodeType = arg.data.nodeType,
+            srcName = arg.name,
+            seriesIndex = arg.seriesIndex,
+            options = echart.getOption(),
+            serieData = options.series[seriesIndex].data,
+            serieLinks = options.series[seriesIndex].links,
+            colors = options.color,
+            serieDataMap = new Map(),
+            serieLinkArr = [],
+            tips = '';
+          // 父节点，排除根节点
+          if (nodeType === 1) {
+            serieLinks.filter(link => link.source === srcName).forEach(link => serieLinkArr.push(link.target));
+            if (serieLinkArr.length) {
+              serieData.forEach(sd => serieDataMap.set(sd.name, sd));
+              for (var i = 0; i < serieLinkArr.length; i++) {
+                if (serieDataMap.has(serieLinkArr[i])) {
+                  var currentData = serieDataMap.get(serieLinkArr[i]),
+                    color = getColor(colors, currentData.category);
+                  tips += '<span style="background-color: ' + color + ';width: 10px;height: 10px;border-radius: 50%;display: inline-block"></span> ' + currentData.legendName + " : " + currentData.name + ' <br />';
+                }
+              }
+            }
+            return tips;
+          } else {
+            return '';
+          }
+        }
+      },
+      "series": [
+        {
+          "itemStyle": {
+            "normal": {
+              "label": {
+                "show": true
+              },
+              "borderType": "solid",
+              "borderColor": "rgba(182,215,0,0.5)",
+              "borderWidth": 2,
+              "opacity": 1
+            },
+            "emphasis": {
+              "borderWidth": 5,
+              "borderType": "solid",
+              "borderColor": "#40f492"
+            }
+          },
+          "lineStyle": {
+            "normal": {
+              "color": "rgba(182,0,255,0.5)",
+              "width": "3",
+              "type": "dotted",
+              "curveness": 0.1,
+              "opacity": 1
+            }
+          },
+          "label": {
+            "normal": {
+              "show": true,
+              "position": "top",
+              "formatter": function (args) {
+                if (args.data.nodeType === 1) {
+                  return "{prefixClassName|" + args.data.legendName + "}";
+                } else {
+                  return "{prefixClassName|" + args.data.legendName + " :}\r\n    " + args.name;
+                }
+              },
+              "rich": {
+                "prefixClassName": {
+                  color: "#fff",
+                  fontWeight: "bold"
+                }
+              }
+            }
+          },
+          "layout": "force",
+          "roam": true,
+          "edgeSymbolSize": [
+            8,
+            10
+          ],
+          "edgeSymbol": [
+            "circle",
+            "arrow"
+          ],
+          "focusNodeAdjacency": false,
+          "force": {
+            "repulsion": 300,
+            "edgeLength": 50
+          },
+          "links": [
+            {
+              "source": "3****************3",
+              "target": "3****************3-bank-card"
+            },
+            {
+              "source": "3****************3-bank-card",
+              "target": "工行卡:4077"
+            },
+            {
+              "source": "3****************3-bank-card",
+              "target": "建行卡:4078"
+            },
+            {
+              "source": "3****************3",
+              "target": "3****************3-basic-info"
+            },
+            {
+              "source": "3****************3-basic-info",
+              "target": "张三"
+            },
+            {
+              "source": "3****************3",
+              "target": "3****************3-contact"
+            },
+            {
+              "source": "3****************3-contact",
+              "target": "145157****@qq.com"
+            },
+            {
+              "source": "3****************3-contact",
+              "target": "14515783**"
+            }
+          ],
+          "categories": [
+            {
+              "name": "用户"
+            },
+            {
+              "name": "身份证"
+            },
+            {
+              "name": "姓名"
+            },
+            {
+              "name": "性别"
+            },
+            {
+              "name": "生日"
+            },
+            {
+              "name": "手机"
+            },
+            {
+              "name": "固定电话"
+            },
+            {
+              "name": "邮箱"
+            },
+            {
+              "name": "qq"
+            },
+            {
+              "name": "地址"
+            },
+            {
+              "name": "银行卡"
+            },
+            {
+              "name": "基本信息"
+            },
+            {
+              "name": "地址分类"
+            },
+            {
+              "name": "联系方式"
+            },
+            {
+              "name": "银行卡分类"
+            }
+          ],
+          "name": "人员关系图",
+          "type": "graph",
+          "showSymbol": true,
+          "yAxisIndex": 0,
+          "z": 2,
+          "data": [
+            {
+              "name": "3****************3",
+              "symbolSize": 40,
+              "value": "3****************3",
+              "category": 0,
+              "draggable": true,
+              "label": {
+                "normal": {
+                  "show": true,
+                  "position": "inside"
+                }
+              },
+              "legendName": "用户",
+              "nodeType": 0,
+              "idCardNum": "3****************3"
+            },
+            {
+              "name": "3****************3-bank-card",
+              "symbolSize": 40,
+              "value": "银行卡分类",
+              "category": -14,
+              "draggable": true,
+              "label": {
+                "normal": {
+                  "show": true,
+                  "position": "inside"
+                }
+              },
+              "legendName": "银行卡分类",
+              "nodeType": 1
+            },
+            {
+              "name": "工行卡:4077",
+              "symbolSize": 20,
+              "value": "工行卡:4077",
+              "category": -10,
+              "draggable": true,
+              "legendName": "银行卡",
+              "nodeType": 0
+            },
+            {
+              "name": "建行卡:4078",
+              "symbolSize": 20,
+              "value": "建行卡:4078",
+              "category": -10,
+              "draggable": true,
+              "legendName": "银行卡",
+              "nodeType": 0
+            },
+            {
+              "name": "3****************3-basic-info",
+              "symbolSize": 40,
+              "value": "基本信息",
+              "category": -11,
+              "draggable": true,
+              "label": {
+                "normal": {
+                  "show": true,
+                  "position": "inside"
+                }
+              },
+              "legendName": "基本信息",
+              "nodeType": 1
+            },
+            {
+              "name": "张三",
+              "symbolSize": 20,
+              "value": "张三",
+              "category": -2,
+              "draggable": true,
+              "legendName": "姓名",
+              "nodeType": 0
+            },
+            {
+              "name": "3****************3-contact",
+              "symbolSize": 40,
+              "value": "联系方式",
+              "category": -13,
+              "draggable": true,
+              "label": {
+                "normal": {
+                  "show": true,
+                  "position": "inside"
+                }
+              },
+              "legendName": "联系方式",
+              "nodeType": 1
+            },
+            {
+              "name": "145157****@qq.com",
+              "symbolSize": 20,
+              "value": "145157****@qq.com",
+              "category": -7,
+              "draggable": true,
+              "legendName": "邮箱",
+              "nodeType": 0
+            },
+            {
+              "name": "14515783**",
+              "symbolSize": 20,
+              "value": "14515783**",
+              "category": -8,
+              "draggable": true,
+              "legendName": "qq",
+              "nodeType": 0
+            }
+          ]
+        }
+      ],
+      "legend": {
+        "data": [
+          "用户",
+          "身份证",
+          "姓名",
+          "性别",
+          "生日",
+          "手机",
+          "固定电话",
+          "邮箱",
+          "qq",
+          "地址",
+          "银行卡",
+          "基本信息",
+          "地址分类",
+          "联系方式",
+          "银行卡分类"
+        ]
+      },
+      "title": [
+        {
+          "left": "left",
+          "text": "人员关系图"
+        }
+      ]
+    };
+    echart.setOption(options);
+    bindChartClickEvent(echart);
+
+    /**
+     * 获取颜色
+     * @param colors
+     * @param index
+     * @returns {*}
+     */
+    function getColor(colors, index) {
+      var length = colors.length,
+        colorIndex = index;
+      if (index >= length) {
+        colorIndex = length - index;
+      }
+      return colors[colorIndex];
+    }
+
+    /**
+     * 绑定图表的点击事件
+     * @param chart
+     */
+    function bindChartClickEvent(chart) {
+      chart.on('click', function (params) {
+        var category = params.data.category,
+          nodeType = params.data.nodeType;
+        if (category === 0 || nodeType === 1) {
+          toggleShowNodes(chart, params);
+        }
+      });
+    }
+
+    /**
+     * 展开或关闭节点
+     * @param chart
+     * @param params
+     */
+    function toggleShowNodes(chart, params) {
+      var open = !!params.data.open,
+        options = chart.getOption(),
+        seriesIndex = params.seriesIndex,
+        srcLinkName = params.name,
+        serieLinks = options.series[seriesIndex].links,
+        serieData = options.series[seriesIndex].data,
+        serieDataMap = new Map(),
+        serieLinkArr = [];
+      // 当前根节点是展开的，那么就需要关闭所有的根节点
+      if (open) {
+        // 递归找到所有的link节点的target的值
+        findLinks(serieLinkArr, srcLinkName, serieLinks, true);
+        if (serieLinkArr.length) {
+          serieData.forEach(sd => serieDataMap.set(sd.name, sd));
+          for (var i = 0; i < serieLinkArr.length; i++) {
+            if (serieDataMap.has(serieLinkArr[i])) {
+              var currentData = serieDataMap.get(serieLinkArr[i]);
+              currentData.category = -Math.abs(currentData.category);
+              if (currentData.nodeType === 1) {
+                currentData.open = false;
+              }
+            }
+          }
+          serieDataMap.get(srcLinkName).open = false;
+          chart.setOption(options);
+        }
+      } else {
+        // 当前根节点是关闭的，那么就需要展开第一层根节点
+        findLinks(serieLinkArr, srcLinkName, serieLinks, false);
+        if (serieLinkArr.length) {
+          serieData.forEach(sd => serieDataMap.set(sd.name, sd));
+          for (var j = 0; j < serieLinkArr.length; j++) {
+            if (serieDataMap.has(serieLinkArr[j])) {
+              var currentData = serieDataMap.get(serieLinkArr[j]);
+              currentData.category = Math.abs(currentData.category);
+            }
+          }
+          serieDataMap.get(srcLinkName).open = true;
+          chart.setOption(options);
+        }
+      }
+    }
+
+    /**
+     * 查找连接关系
+     * @param links 返回的节点放入此集合
+     * @param srcLinkName 源线的名称
+     * @param serieLinks 需要查找的集合
+     * @param deep 是否需要递归进行查找
+     */
+    function findLinks(links, srcLinkName, serieLinks, deep) {
+      var targetLinks = [];
+      serieLinks.filter(link => link.source === srcLinkName).forEach(link => {
+        targetLinks.push(link.target);
+        links.push(link.target)
+      });
+      if (deep) {
+        for (var i = 0; i < targetLinks.length; i++) {
+          findLinks(links, targetLinks[i], serieLinks, deep);
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
