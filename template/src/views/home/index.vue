@@ -32,7 +32,7 @@
             <p v-for="(i,j) in menu" :key="j">{{i.key}}</p>
           </h1>
           <Ic :end="end" count-class="count-text"></Ic>
-          <p>{{time | moment('datetime')}}</p>
+          <!-- <p>{{time | moment('datetime')}}</p> -->
           <HelloWorld v-bind.sync="more" />
           <Bc></Bc>
         </div>
