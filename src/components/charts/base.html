@@ -10,13 +10,11 @@
 <body>
   <div id="chart" style="width: 100%;height: 600px"></div>
   <script type="text/javascript">
-    console.log(echarts);
-
-    var echart = echarts.init(document.getElementById('chart'));
-    var options = {
+    let echart = echarts.init(document.getElementById('chart'));
+    let options = {
       tooltip: {
         "formatter": function (arg) {
-          var nodeType = arg.data.nodeType,
+          let nodeType = arg.data.nodeType,
             srcName = arg.name,
             seriesIndex = arg.seriesIndex,
             options = echart.getOption(),
@@ -31,9 +29,9 @@
             serieLinks.filter(link => link.source === srcName).forEach(link => serieLinkArr.push(link.target));
             if (serieLinkArr.length) {
               serieData.forEach(sd => serieDataMap.set(sd.name, sd));
-              for (var i = 0; i < serieLinkArr.length; i++) {
+              for (let i = 0; i < serieLinkArr.length; i++) {
                 if (serieDataMap.has(serieLinkArr[i])) {
-                  var currentData = serieDataMap.get(serieLinkArr[i]),
+                  let currentData = serieDataMap.get(serieLinkArr[i]),
                     color = getColor(colors, currentData.category);
                   tips += '<span style="background-color: ' + color + ';width: 10px;height: 10px;border-radius: 50%;display: inline-block"></span> ' + currentData.legendName + " : " + currentData.name + ' <br />';
                 }
@@ -329,8 +327,8 @@
       ]
     };
     echart.setOption(options);
-  // 单纬初始化
-  let _options = echart.getOption(),
+    // 单纬初始化
+    let _options = echart.getOption(),
       serieLinks = _options.series[0].links,
       serieData = _options.series[0].data,
       serieDataMap = new Map();
@@ -357,7 +355,7 @@
      * @param chart
      */
     function bindChartClickEvent(chart) {
-       chart.on('click', function (params) {
+      chart.on('click', function (params) {
         let category = params.data.category,
           nodeType = params.data.nodeType;
         if (category === 0 || nodeType === 1) {
@@ -377,36 +375,36 @@
         srcLinkName = params.name,
         serieLinkArr = [];
 
-      const t0 = performance.now()  
+      const t0 = performance.now()
       // 当前根节点是展开的，那么就需要关闭所有的根节点
-              // 递归找到所有的link节点的target的值
-              findLinks(serieLinkArr, srcLinkName, serieLinks, open);
+      // 递归找到所有的link节点的target的值
+      findLinks(serieLinkArr, srcLinkName, serieLinks, open);
       if (serieLinkArr.length) {
-          for (let i = 0; i < serieLinkArr.length; i++) {
-            if (serieDataMap.has(serieLinkArr[i])) {
-              let currentData = serieDataMap.get(serieLinkArr[i]);
-              if(open) {
-                currentData.category = -Math.abs(currentData.category);
-                if (currentData.nodeType === 1) {
+        for (let i = 0; i < serieLinkArr.length; i++) {
+          if (serieDataMap.has(serieLinkArr[i])) {
+            let currentData = serieDataMap.get(serieLinkArr[i]);
+            if (open) {
+              currentData.category = -Math.abs(currentData.category);
+              if (currentData.nodeType === 1) {
                 currentData.open = false;
               }
-              }
-              else {
-                currentData.category = Math.abs(currentData.category);
-              }
-              
-
             }
-          }
+            else {
+              currentData.category = Math.abs(currentData.category);
+            }
 
-      const t1 = performance.now()  
-      serieDataMap.get(srcLinkName).open = !open;
-      console.log('查询节点和关系耗时:', (t1 - t0)/1000);
-      const e0 = performance.now()  
-      chart.setOption(_options);
-      const e1 = performance.now() 
-      console.log('canvas渲染耗时:', (e1 - e0)/1000); 
-    }
+
+          }
+        }
+
+        const t1 = performance.now()
+        serieDataMap.get(srcLinkName).open = !open;
+        console.log('查询节点和关系耗时:', (t1 - t0) / 1000);
+        const e0 = performance.now()
+        chart.setOption(_options);
+        const e1 = performance.now()
+        console.log('canvas渲染耗时:', (e1 - e0) / 1000);
+      }
     }
 
     /**
@@ -419,7 +417,7 @@
     function findLinks(links, srcLinkName, serieLinks, deep) {
       let targetLinks = [];
       serieLinks.filter(link => link.source === srcLinkName).forEach(link => {
-       deep && targetLinks.push(link.target);
+        deep && targetLinks.push(link.target);
         links.push(link.target)
       });
       if (deep) {
