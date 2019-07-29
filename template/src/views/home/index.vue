@@ -26,7 +26,7 @@
         <div class="home">
           <img @click="tx" alt="Vue logo" src="../../assets/img/logo.png" />
           <div>
-            <Ec style="height:300px"></Ec>
+            <chart-bar style="height: 300px;" :value="barData" text="每周用户活跃量" />
           </div>
           <h1>
             <p v-for="(i,j) in menu" :key="j">{{i.key}}</p>
@@ -42,7 +42,7 @@
 
 <script>
 import Header from '@/components/header/header'
-import Ec from '@/components/charts/force-tree'
+import chartBar from '@/components/charts/bar'
 import HelloWorld from '@/components/HelloWorld.vue'
 import Bc from '@/components/broChild'
 import Ic from '@/components/count-to'
@@ -54,7 +54,7 @@ export default {
     HelloWorld,
     Bc,
     Ic,
-    Ec
+    chartBar
   },
   computed: {
     menu() {
@@ -68,7 +68,16 @@ export default {
         msg: 'Welcome to Your Vue.js App',
         num: 10
       },
-      end: 1000000
+      end: 1000000,
+      barData: {
+        Mon: 13253,
+        Tue: 34235,
+        Wed: 26321,
+        Thu: 12340,
+        Fri: 24643,
+        Sat: 1322,
+        Sun: 1324
+      }
     }
   },
   created() {
